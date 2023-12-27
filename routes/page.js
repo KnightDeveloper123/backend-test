@@ -11,6 +11,7 @@ router.get('/hello', (req, res)=>{
 })
 
 router.get('/database',async (req, res)=>{
+    console.log('/database hitted');
     const result = await connection.query('select * from test')
     const data = result.rows
     res.json({data})
