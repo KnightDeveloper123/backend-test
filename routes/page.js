@@ -31,9 +31,7 @@ router.post('/subscribe', (req, res) => {
     res.status(201).json({});
     const payload = JSON.stringify({ title: "Hello World", body: "This is your first push notification" });
 
-    webpush.sendNotification(subscription, payload).catch(err=>{
-        res.json({err:"You have got an err"})
-    });
+    webpush.sendNotification(subscription, payload).catch(console.log)
 
     // res.send("hello");
 })
