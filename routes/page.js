@@ -3,19 +3,20 @@ var router = express.Router();
 const connection = require('../db')
 const webpush = require('web-push');
 
-router.get('/test', (req, res)=>{
-    res.json({message:"This is Test API"})
+
+router.get('/test', (req, res) => {
+    res.json({ message: "This is Test API" })
 })
 
-router.get('/hello', (req, res)=>{
-    res.json({message:"This is hello API"})
+router.get('/hello', (req, res) => {
+    res.json({ message: "This is hello API" })
 })
 
-router.get('/database',async (req, res)=>{
+router.get('/database', async (req, res) => {
     console.log('/database hitted');
     const result = await connection.query('select * from test')
     const data = result.rows
-    res.json({data})
+    res.json({ data })
 })
 
 const publicVapidKey = "BPHcUQEW_OLPLwyiDJuK0POa2hNYClIr7boZHmbOmMjDnrr_NgzmM0_DQJU622sPFTYertotkv1tFmk1lFe7iNc";
@@ -28,10 +29,15 @@ webpush.setVapidDetails("mailto: <thorragnorak241077@gmail.com>", publicVapidKey
 // Create route for allow client to subscribe to push notification.
 router.post('/subscribe', (req, res) => {
     const subscription = req.body;
-    res.status(201).json({});
-    const payload = JSON.stringify({ title: "Hello World", body: "This is your first push notification" });
+    console.log(subscription);
+    try {
+        res.status(201).json({});
+        const payload = JSON.stringify({ title: "Hello World", body: "This is your first push notification" });
 
-    webpush.sendNotification(subscription, payload).catch(console.log)
+        webpush.sendNotification(subscription, payload).catch(console.log)
+    } catch (error) {
+        res.status(500).json({error:error})
+    }
 
     // res.send("hello");
 })
